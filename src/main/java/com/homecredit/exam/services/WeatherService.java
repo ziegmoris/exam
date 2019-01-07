@@ -38,12 +38,15 @@ public class WeatherService {
 
     public void saveWeatherLog(List<WeatherLog> weatherLogList) {
         List<WeatherLog> finalLogList = new ArrayList<>();
-        weatherLogList.forEach(weatherLog -> {
-            WeatherLog log = weatherRepository.findByResponseId(weatherLog.getResponseId());
-            if (log == null) {
-                finalLogList.add(weatherLog);
+        for (int i = weatherLogList.size() - 1; i >= 0; i--) {
+            if (finalLogList.size() == 5) {
+                break;
             }
-        });
+            WeatherLog log = weatherRepository.findByResponseId(weatherLogList.get(i).getResponseId());
+            if (log == null) {
+                finalLogList.add(weatherLogList.get(i));
+            }
+        }
         weatherRepository.saveAll(finalLogList);
     }
 
